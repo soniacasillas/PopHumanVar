@@ -1,0 +1,21 @@
+[Unit]
+Description=PopHumanVar Shiny application
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=localhost/pophumanvar:1.0.0
+ContainerName=pophumanvar
+Network=host
+EnvironmentFile=/var/www/pophumanvar/config/pophumanvar.env
+Volume=/var/www/pophuman/files/vcf:/data/vcf:ro
+PodmanArgs=--security-opt label=disable
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target
+
