@@ -1,0 +1,40 @@
+Package: PopHumanVar
+Type: Project
+Title: PopHumanVar Shiny Application
+Version: 1.0.0
+Authors@R: person("PopHumanVar", "Team", role = c("aut", "cre"), email = "sonia.casillas@uab.cat")
+Description: Restored PopHumanVar Shiny application. The same source tree supports
+    the full UAB deployment and the database-only Connect Cloud mirror.
+License: file LICENSE
+Encoding: UTF-8
+Imports:
+    biomaRt,
+    data.table,
+    DBI,
+    dbplyr,
+    dplyr,
+    DT,
+    ggplot2,
+    intervals,
+    JBrowseR,
+    plotly,
+    RMariaDB,
+    shiny,
+    shinyalert,
+    shinyBS,
+    shinycssloaders,
+    shinycustomloader,
+    shinydashboard,
+    shinydashboardPlus,
+    shinyhelper,
+    shinyjs,
+    shinythemes,
+    shinyWidgets,
+    splitstackshape,
+    stringr,
+    tibble,
+    tidyverse,
+    waiter
+Suggests:
+    rehh
+

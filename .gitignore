@@ -1,0 +1,17 @@
+.Renviron
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+renv/library/
+renv/staging/
+*.sql
+*.sql.gz
+*.vcf
+*.vcf.gz
+*.tbi
+logs/
+secrets/
+.env
+
+

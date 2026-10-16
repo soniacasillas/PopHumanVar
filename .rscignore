@@ -1,0 +1,9 @@
+.git
+.github
+.Renviron
+.dockerignore
+Containerfile
+deploy
+logs
+secrets
+

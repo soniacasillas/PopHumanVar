@@ -1,0 +1,10 @@
+step;text;icon
+1;Start at Stats Visualitzation section (left menu), when active, Filters Menu appears in the sidebar;chart-bar
+2;Input the coordinates or perform a search by ID;search
+3;Choose which populaitons or metapopulations you would like to see;globe-africa
+4;Specify the p-value cutoff for iHS and nSL, and wether you prefer to see all data or only the extreme values;stream
+5;Specify the p-value cutoff for iSAFE, and wether you prefer to see all data or only the extreme values;asterisk
+6;Modify the information you want to see displayed in the Functional Description tab;layer-group
+7;Choose the clock model, years per generation and any other filters you want to apply in the Age Informaiton tab;hourglass
+8;All changes need to be confirmed by clicking the update button under the Filters Menu;redo-alt
+9;For more detailed information, check the Tutorial tab;question-circle

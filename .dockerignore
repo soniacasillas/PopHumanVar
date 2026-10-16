@@ -1,0 +1,15 @@
+.git
+.github
+.Renviron
+.Rhistory
+.RData
+renv/library
+deploy
+*.sql
+*.sql.gz
+*.vcf
+*.vcf.gz
+*.tbi
+logs
+secrets
+

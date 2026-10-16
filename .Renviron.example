@@ -1,0 +1,14 @@
+# Database shared by both deployment profiles.
+PHV_DB_HOST=127.0.0.1
+PHV_DB_PORT=3306
+PHV_DB_USER=pophumanvar
+PHV_DB_PASSWORD=replace_with_a_new_password
+# Optional CA certificate path for encrypted remote MySQL connections.
+PHV_DB_SSL_CA=
+
+# UAB: true. Connect Cloud consultation mirror: false.
+PHV_ENABLE_HAPLOTYPES=true
+
+# Required only when haplotypes are enabled.
+PHV_VCF_DIR=/var/www/pophuman/files/vcf
+PHV_BCFTOOLS=/usr/bin/bcftools
