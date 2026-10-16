@@ -17,7 +17,12 @@ jobs:
           use-public-rspm: true
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rsconnect
+          extra-packages: |
+            any::rsconnect
+            any::BiocManager
+            bioc::BiocVersion
+            any::cpp11
+            any::rehh
           needs: manifest
           dependencies: '"hard"'
       - name: Generate manifest
