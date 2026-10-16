@@ -19,7 +19,7 @@ jobs:
         with:
           extra-packages: any::rsconnect
           needs: manifest
-          dependencies: 'hard'
+          dependencies: '"hard"'
       - name: Generate manifest
         run: Rscript scripts/generate-manifest.R
       - name: Commit manifest
@@ -29,4 +29,3 @@ jobs:
           git add manifest.json
           git diff --cached --quiet || git commit -m "Generate Connect Cloud manifest"
           git push
-
