@@ -1,0 +1,7 @@
+PHV_DB_HOST=mysql.example.dreamhost.com
+PHV_DB_PORT=3306
+PHV_DB_USER=pophumanvar_readonly
+PHV_DB_PASSWORD=REPLACE_WITH_A_NEW_PASSWORD
+PHV_DB_SSL_CA=
+PHV_ENABLE_HAPLOTYPES=false
+
