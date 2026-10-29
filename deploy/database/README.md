@@ -19,6 +19,7 @@ export PHV_DB_HOST=127.0.0.1
 export PHV_DB_PORT=3306
 export PHV_DB_USER=pophumanvar_loader
 export PHV_DB_PASSWORD='the-temporary-loader-password'
+export PHV_DB_PREFIX=
 bash deploy/database/import-databases.sh
 bash deploy/database/verify-databases.sh
 ```
@@ -27,15 +28,15 @@ bash deploy/database/verify-databases.sh
 
 ## DreamHost MySQL
 
-1. In the DreamHost panel, create the nine databases with the exact names
-   listed in the main README (or record any mandatory prefixes). Give one
-   dedicated database user access to all nine.
+1. In the DreamHost panel, create `dh_functional`, `dh_geva`, `dh_ihs`,
+   `dh_ihs_pval`, `dh_isafe`, `dh_isafe_pval`, `dh_nsl`, `dh_nsl_pval`, and
+   `dh_phs`. Give one dedicated database user access to all nine.
 2. Allow connections from the Connect Cloud outbound IP addresses in the
    DreamHost database access settings. Do not expose the account to arbitrary
    hosts.
-3. From the DreamHost SSH shell, set `PHV_DB_HOST` to the database hostname and
-   run the same importer. If DreamHost forces prefixed database names, the app
-   will need a name mapping before deployment; do not rename dumps silently.
+3. From the DreamHost SSH shell, set `PHV_DB_HOST` to the database hostname,
+   set `PHV_DB_PREFIX=dh_`, and run the same importer. Dump filenames remain
+   unprefixed; the importer maps each dump to its prefixed destination.
 4. Run `verify-databases.sh`, then use a separate read-only runtime user if the
    DreamHost plan permits it.
 

@@ -8,6 +8,12 @@ databases=(functional geva ihs ihs_pval isafe isafe_pval nsl nsl_pval phs)
 : "${PHV_DB_USER:?Set PHV_DB_USER}"
 : "${PHV_DB_PASSWORD:?Set PHV_DB_PASSWORD}"
 PHV_DB_PORT="${PHV_DB_PORT:-3306}"
+PHV_DB_PREFIX="${PHV_DB_PREFIX:-}"
+
+if [[ ! "$PHV_DB_PREFIX" =~ ^[A-Za-z0-9_]*$ ]]; then
+  echo "PHV_DB_PREFIX may contain only letters, numbers and underscores." >&2
+  exit 1
+fi
 
 client="${PHV_MYSQL_CLIENT:-}"
 if [[ -z "$client" ]]; then
@@ -43,16 +49,17 @@ fi
 
 for database in "${databases[@]}"; do
   dump="$PHV_DUMP_DIR/$database.sql.gz"
+  target_database="${PHV_DB_PREFIX}${database}"
   if [[ ! -r "$dump" ]]; then
     echo "Missing dump: $dump" >&2
     exit 1
   fi
 
-  echo "Importing $database..."
+  echo "Importing $database into $target_database..."
   gzip -dc -- "$dump" | "$client" \
     --defaults-extra-file="$defaults_file" \
     --default-character-set=latin1 \
-    "$database"
+    "$target_database"
 done
 
 echo "All nine PopHumanVar databases were imported."
