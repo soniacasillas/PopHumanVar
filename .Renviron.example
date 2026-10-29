@@ -3,6 +3,8 @@ PHV_DB_HOST=127.0.0.1
 PHV_DB_PORT=3306
 PHV_DB_USER=pophumanvar
 PHV_DB_PASSWORD=replace_with_a_new_password
+# Optional prefix added to every logical database name (for example, dh_).
+PHV_DB_PREFIX=
 # Optional CA certificate path for encrypted remote MySQL connections.
 PHV_DB_SSL_CA=
 

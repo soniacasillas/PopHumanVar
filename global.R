@@ -39,6 +39,7 @@ db_user <- Sys.getenv("PHV_DB_USER")
 db_password <- Sys.getenv("PHV_DB_PASSWORD")
 db_host <- Sys.getenv("PHV_DB_HOST")
 db_port <- as.integer(Sys.getenv("PHV_DB_PORT", "3306"))
+db_prefix <- Sys.getenv("PHV_DB_PREFIX")
 phv_env_flag <- function(name, default = FALSE) {
 	value <- Sys.getenv(name, if (default) "true" else "false")
 	tolower(trimws(value)) %in% c("1", "true", "yes", "on")
@@ -50,6 +51,10 @@ phv_db_ssl_ca <- Sys.getenv("PHV_DB_SSL_CA")
 
 if (any(!nzchar(c(db_user, db_password, db_host)))) {
 	stop("Set PHV_DB_USER, PHV_DB_PASSWORD and PHV_DB_HOST before starting PopHumanVar.")
+}
+
+if (!grepl("^[A-Za-z0-9_]*$", db_prefix)) {
+	stop("PHV_DB_PREFIX may contain only letters, numbers and underscores.")
 }
 
 if (phv_enable_haplotypes && !nzchar(phv_vcf_dir)) {
@@ -64,11 +69,12 @@ if (phv_enable_haplotypes && !requireNamespace("rehh", quietly = TRUE)) {
 ##################### FUNCTIONS
 
 phv_db_connect <- function(dbname) {
+	physical_dbname <- paste0(db_prefix, dbname)
 	args <- list(
 		drv = RMariaDB::MariaDB(),
 		user = db_user,
 		password = db_password,
-		dbname = dbname,
+		dbname = physical_dbname,
 		host = db_host,
 		port = db_port
 	)

@@ -15,7 +15,8 @@ plots require the local VCF collection and `bcftools`.
 
 Copy `.Renviron.example` to a location outside the repository and set:
 
-- `PHV_DB_HOST`, `PHV_DB_PORT`, `PHV_DB_USER`, `PHV_DB_PASSWORD`
+- `PHV_DB_HOST`, `PHV_DB_PORT`, `PHV_DB_USER`, `PHV_DB_PASSWORD
+- `PHV_DB_PREFIX` (empty at UAB; `dh_` at DreamHost)
 - `PHV_ENABLE_HAPLOTYPES=true|false`
 - `PHV_VCF_DIR` and `PHV_BCFTOOLS` when haplotypes are enabled
 
@@ -23,6 +24,10 @@ Never commit passwords or a real `.Renviron` file. The application expects the
 nine databases `functional`, `geva`, `ihs`, `ihs_pval`, `isafe`,
 `isafe_pval`, `nsl`, `nsl_pval`, and `phs` to be accessible using the same SQL
 credentials.
+
+`PHV_DB_PREFIX` is applied centrally. The application continues using the
+logical names such as `functional` and `geva`, while DreamHost connects to
+`dh_functional`, `dh_geva`, and so on.
 
 ## Deployment guides
 
@@ -41,3 +46,4 @@ Rscript scripts/check-app.R
 The recovered application deliberately has no mail-sending or file-upload
 workflow. Its contact area directs users to `sonia.casillas@uab.cat` and
 `antonio.barbadilla@uab.cat`.
+
