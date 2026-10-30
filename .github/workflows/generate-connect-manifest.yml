@@ -18,11 +18,11 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
-            any::rsconnect
-            any::BiocManager
+            cran::rsconnect
+            cran::BiocManager
             bioc::BiocVersion
-            any::cpp11
-            any::rehh
+            cran::cpp11
+            cran::rehh
           needs: manifest
           dependencies: '"hard"'
       - name: Generate manifest
@@ -34,3 +34,4 @@ jobs:
           git add manifest.json
           git diff --cached --quiet || git commit -m "Generate Connect Cloud manifest"
           git push
+
