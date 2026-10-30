@@ -8,9 +8,11 @@ files or run `bcftools`.
 ## Before deploying
 
 1. Restore the nine databases to DreamHost using the database guide.
-2. Create a dedicated read-only MySQL user for runtime access.
-   Set `PHV_DB_PREFIX=dh_` so logical database names such as `functional`
-   resolve to the DreamHost names such as `dh_functional`.
+2. Create a dedicated read-only MySQL user for runtime access. Set
+   `PHV_DB_PREFIX=dh_`, `PHV_DB_LAYOUT=sharded`, and
+   `PHV_DB_SHARD_MAP_FILE=config/dreamhost-shards.tsv`. The shard map routes
+   the oversized `functional` and `geva` tables to ten databases while the
+   other seven logical databases retain their original names.
 3. In DreamHost, allow only the current outbound IP addresses published by
    Posit Connect Cloud. Recheck that list in Posit's documentation/dashboard
    immediately before configuring the allowlist because it can change.
