@@ -6,4 +6,4 @@ Containerfile
 deploy
 logs
 secrets
-
+scripts
