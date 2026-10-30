@@ -5271,7 +5271,7 @@
       "checksum": "e765332d8d34774951d4e53511b2c995"
     },
     ".Renviron.example": {
-      "checksum": "135c394bf44bd4d7a40343070f3ce242"
+      "checksum": "22f4578372032e501fd5d1757dc14ea0"
     },
     "aboutUs_text.html": {
       "checksum": "3fa31a11b8d7da58b335caa2ad76719f"
@@ -5281,6 +5281,9 @@
     },
     "citeUs_text.html": {
       "checksum": "f3ca3f6a499c2738512359eb9713daba"
+    },
+    "config/dreamhost-shards.tsv": {
+      "checksum": "e2ee18d342cfa105986fad1cbadb7124"
     },
     "DESCRIPTION": {
       "checksum": "2ff0ad87337c6465a715c097e5be6729"
@@ -5295,7 +5298,7 @@
       "checksum": "a7ab05bacf0dd6ca906ff18a6edea1fa"
     },
     "global.R": {
-      "checksum": "eb92607fb03ed5972f34f5a93a01c677"
+      "checksum": "db19363457d1e1c26682c663269cfe0d"
     },
     "google-analytics.html": {
       "checksum": "a5c0852b70fe1b4e72044deb361cbd9d"
@@ -5310,7 +5313,7 @@
       "checksum": "549c9d2892c6e552cea7206ecccd518f"
     },
     "README.md": {
-      "checksum": "4fe957437556e9ce812f4caddf32aaaa"
+      "checksum": "6e6b3e13566efe1456f2fb94d2c95f5a"
     },
     "SECURITY.md": {
       "checksum": "e48d9ae5d8eb6a66a32bb6a37e4b914c"
