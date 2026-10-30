@@ -15,8 +15,9 @@ plots require the local VCF collection and `bcftools`.
 
 Copy `.Renviron.example` to a location outside the repository and set:
 
-- `PHV_DB_HOST`, `PHV_DB_PORT`, `PHV_DB_USER`, `PHV_DB_PASSWORD
+- `PHV_DB_HOST`, `PHV_DB_PORT`, `PHV_DB_USER`, `PHV_DB_PASSWORD`
 - `PHV_DB_PREFIX` (empty at UAB; `dh_` at DreamHost)
+- `PHV_DB_LAYOUT=database|sharded` and `PHV_DB_SHARD_MAP_FILE` for DreamHost
 - `PHV_ENABLE_HAPLOTYPES=true|false`
 - `PHV_VCF_DIR` and `PHV_BCFTOOLS` when haplotypes are enabled
 
@@ -25,9 +26,9 @@ nine databases `functional`, `geva`, `ihs`, `ihs_pval`, `isafe`,
 `isafe_pval`, `nsl`, `nsl_pval`, and `phs` to be accessible using the same SQL
 credentials.
 
-`PHV_DB_PREFIX` is applied centrally. The application continues using the
-logical names such as `functional` and `geva`, while DreamHost connects to
-`dh_functional`, `dh_geva`, and so on.
+`PHV_DB_PREFIX` and the optional shard map are applied centrally. The application
+continues using logical database and table names; the UAB profile uses the original
+databases, while DreamHost can route selected tables to size-limited shards.
 
 ## Deployment guides
 

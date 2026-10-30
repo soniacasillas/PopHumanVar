@@ -40,6 +40,11 @@ db_password <- Sys.getenv("PHV_DB_PASSWORD")
 db_host <- Sys.getenv("PHV_DB_HOST")
 db_port <- as.integer(Sys.getenv("PHV_DB_PORT", "3306"))
 db_prefix <- Sys.getenv("PHV_DB_PREFIX")
+phv_db_layout <- tolower(trimws(Sys.getenv("PHV_DB_LAYOUT", "database")))
+phv_db_shard_map_file <- Sys.getenv(
+	"PHV_DB_SHARD_MAP_FILE",
+	"config/dreamhost-shards.tsv"
+)
 phv_env_flag <- function(name, default = FALSE) {
 	value <- Sys.getenv(name, if (default) "true" else "false")
 	tolower(trimws(value)) %in% c("1", "true", "yes", "on")
@@ -57,6 +62,34 @@ if (!grepl("^[A-Za-z0-9_]*$", db_prefix)) {
 	stop("PHV_DB_PREFIX may contain only letters, numbers and underscores.")
 }
 
+if (!phv_db_layout %in% c("database", "sharded")) {
+	stop("PHV_DB_LAYOUT must be either 'database' or 'sharded'.")
+}
+
+phv_db_shard_map <- character()
+if (identical(phv_db_layout, "sharded")) {
+	if (!file.exists(phv_db_shard_map_file)) {
+		stop("PHV_DB_SHARD_MAP_FILE does not exist: ", phv_db_shard_map_file)
+	}
+	shard_config <- read.delim(
+		phv_db_shard_map_file,
+		stringsAsFactors = FALSE,
+		check.names = FALSE
+	)
+	required_columns <- c("database", "table", "shard")
+	if (!all(required_columns %in% names(shard_config))) {
+		stop("The shard map must contain database, table and shard columns.")
+	}
+	if (any(!grepl("^[A-Za-z0-9_]+$", unlist(shard_config[required_columns])))) {
+		stop("Shard map identifiers may contain only letters, numbers and underscores.")
+	}
+	shard_keys <- paste(shard_config$database, shard_config$table, sep = ".")
+	if (anyDuplicated(shard_keys)) {
+		stop("The shard map contains duplicate database/table entries.")
+	}
+	phv_db_shard_map <- stats::setNames(shard_config$shard, shard_keys)
+}
+
 if (phv_enable_haplotypes && !nzchar(phv_vcf_dir)) {
 	stop("Set PHV_VCF_DIR when PHV_ENABLE_HAPLOTYPES is enabled.")
 }
@@ -68,8 +101,19 @@ if (phv_enable_haplotypes && !requireNamespace("rehh", quietly = TRUE)) {
 
 ##################### FUNCTIONS
 
-phv_db_connect <- function(dbname) {
-	physical_dbname <- paste0(db_prefix, dbname)
+phv_physical_database <- function(dbname, table = NULL) {
+	physical_name <- dbname
+	if (identical(phv_db_layout, "sharded") && !is.null(table)) {
+		shard_key <- paste(dbname, table, sep = ".")
+		if (shard_key %in% names(phv_db_shard_map)) {
+			physical_name <- unname(phv_db_shard_map[[shard_key]])
+		}
+	}
+	paste0(db_prefix, physical_name)
+}
+
+phv_db_connect <- function(dbname, table = NULL) {
+	physical_dbname <- phv_physical_database(dbname, table)
 	args <- list(
 		drv = RMariaDB::MariaDB(),
 		user = db_user,
@@ -86,9 +130,10 @@ phv_db_connect <- function(dbname) {
 
 # Connect & get SQL informaiton
 sqlToDf <- function(chr, coordStart, coordEnd, dbName){
-	con <- phv_db_connect(dbName)
+	table_name <- paste0("chr", chr)
+	con <- phv_db_connect(dbName, table_name)
 	myQuery <- paste0("SELECT * FROM ", 
-		"chr", chr, 
+		table_name,
 		" WHERE physicalPos BETWEEN ", coordStart, 
 		" AND ", coordEnd)
 	df <- dbGetQuery(con, myQuery)
@@ -100,9 +145,10 @@ sqlToDf <- function(chr, coordStart, coordEnd, dbName){
 
 phs_overlap <- function(chr,coordStart,coordEnd){
 
-	con <- phv_db_connect('phs')
+	table_name <- paste0("chr", chr)
+	con <- phv_db_connect('phs', table_name)
 	myQuery <- paste0("SELECT * FROM ", 
-		"chr", chr)
+		table_name)
 	phs <- as.data.table(dbGetQuery(con, myQuery))
 	dbDisconnect(con)
 
@@ -143,7 +189,7 @@ getID <- function(idInput,db = ensembl){
 # Get coordinates from EnsemblID
 getEnsID <- function(idInput){
 	# Connection
-	con <- phv_db_connect('functional')
+	con <- phv_db_connect('functional', 'genes')
 	
 	myQuery <- paste0('SELECT chr,start,end FROM genes WHERE ensemblID = "',idInput, '"')
 	coord <- dbGetQuery(con, myQuery) %>% suppressWarnings()
@@ -155,7 +201,7 @@ getEnsID <- function(idInput){
 # Get coordinates from hugoGeneID
 getHUGO <- function(idInput){
 	# Connection
-	con <- phv_db_connect('functional')
+	con <- phv_db_connect('functional', 'genes')
 
 	myQuery <- paste0('SELECT chr,start,end FROM genes WHERE hgnc = "',idInput, '"')
 	coord <- dbGetQuery(con, myQuery) %>% suppressWarnings()
@@ -167,7 +213,7 @@ getHUGO <- function(idInput){
 # Update max an min from widgets when chr change
 getSliderValues <- function(chrN, clock){
 	
-	con <- phv_db_connect('functional')
+	con <- phv_db_connect('functional', 'sliderStaticValues')
 	myQuery <- paste0("SELECT * FROM sliderStaticValues")
 	queryInfo <- dbGetQuery(con, myQuery) %>% as.data.table
 	dbDisconnect(con)
@@ -599,7 +645,7 @@ popsData <- data.table(
 		"#A965BA","#D5A3E3","#8E3EA3","#B79BBD","#C587D6"))
 
 # statCutoff
-con <- phv_db_connect('functional')
+con <- phv_db_connect('functional', 'statCutoff')
 myQuery <- paste0("SELECT * FROM statCutoff")
 statCutoff <- dbGetQuery(con, myQuery) %>% as.data.table
 dbDisconnect(con)

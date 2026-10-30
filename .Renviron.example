@@ -5,6 +5,10 @@ PHV_DB_USER=pophumanvar
 PHV_DB_PASSWORD=replace_with_a_new_password
 # Optional prefix added to every logical database name (for example, dh_).
 PHV_DB_PREFIX=
+# database: one physical database per logical dataset (UAB).
+# sharded: resolve selected tables through PHV_DB_SHARD_MAP_FILE (DreamHost).
+PHV_DB_LAYOUT=database
+PHV_DB_SHARD_MAP_FILE=config/dreamhost-shards.tsv
 # Optional CA certificate path for encrypted remote MySQL connections.
 PHV_DB_SSL_CA=
 
