@@ -43,4 +43,47 @@ bash deploy/database/verify-databases.sh
 The importer resumes at database granularity: if interrupted, rerun it after
 removing/recreating the partially imported database or after confirming that
 replaying its `DROP TABLE` statements is acceptable.
+## DreamHost table shards
 
+The checked-in `config/dreamhost-shards.tsv` keeps every physical database
+below approximately 2.8 GB using seven `functional` shards and three `geva`
+shards. The remaining seven databases are not split.
+
+Create these ten empty databases in the DreamHost panel and grant the loader
+user full table privileges on them:
+
+- `dh_functional_1` through `dh_functional_7`
+- `dh_geva_1` through `dh_geva_3`
+
+Keep `dh_functional` and `dh_geva` unchanged during migration. From the
+repository root on the DreamHost SSH host, export the loader credentials and
+run:
+
+```sh
+export PHV_DB_PREFIX=dh_
+export PHV_DB_SHARD_MAP_FILE=config/dreamhost-shards.tsv
+export PHV_MYSQL_CLIENT=mysql
+export PHV_MYSQL_DUMP_CLIENT=mysqldump
+bash deploy/database/migrate-dreamhost-shards.sh \
+  2>&1 | tee ~/pophumanvar-shard-migration.log
+bash deploy/database/verify-dreamhost-shards.sh \
+  2>&1 | tee ~/pophumanvar-shard-verification.log
+```
+
+The migration copies tables through a stream and never modifies the sources.
+Verification compares exact row counts between every source and destination.
+After all rows report `OK`, grant the read-only Connect Cloud user `SELECT`
+access to all ten shards and add the current Connect Cloud outbound IPs to that
+user's allowable hosts.
+
+Configure Connect Cloud with:
+
+```text
+PHV_DB_PREFIX=dh_
+PHV_DB_LAYOUT=sharded
+PHV_DB_SHARD_MAP_FILE=config/dreamhost-shards.tsv
+```
+
+Republish and test chromosome queries from every shard before removing the old
+`dh_functional` and `dh_geva` databases in the DreamHost panel. Database
+removal is deliberately not automated.
