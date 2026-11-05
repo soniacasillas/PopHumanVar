@@ -2793,31 +2793,30 @@
         "Package": "litedown",
         "Type": "Package",
         "Title": "A Lightweight Version of R Markdown",
-        "Version": "0.11",
-        "Authors@R": "c(\n    person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\", URL = \"https://yihui.org\")),\n    person(\"Tim\", \"Taylor\", role = \"ctb\", comment = c(ORCID = \"0000-0002-8587-7113\")),\n    person()\n    )",
-        "Description": "Render R Markdown to Markdown (without using 'knitr'), and Markdown\n    to lightweight HTML or 'LaTeX' documents with the 'commonmark' package (instead\n    of 'Pandoc'). Some missing Markdown features in 'commonmark' are also\n    supported, such as raw HTML or 'LaTeX' blocks, 'LaTeX' math, superscripts,\n    subscripts, footnotes, element attributes, and appendices,\n    but not all 'Pandoc' Markdown features are (or will be) supported. With\n    additional JavaScript and CSS, you can also create HTML slides and articles.\n    This package can be viewed as a trimmed-down version of R Markdown and\n    'knitr'. It does not aim at rich Markdown features or a large variety of\n    output formats (the primary formats are HTML and 'LaTeX'). Book and website\n    projects of multiple input documents are also supported.",
+        "Version": "1.0",
+        "Authors@R": "c(\n    person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\", URL = \"https://yihui.org\")),\n    person(\"Tim\", \"Taylor\", role = \"ctb\", comment = c(ORCID = \"0000-0002-8587-7113\")),\n    person(\"John\", \"MacFarlane\", role = \"cph\", comment = \"Author of cmark\"),\n    person(\"Jeroen\", \"Ooms\", role = c(\"ctb\", \"cph\"), comment = \"Author of the R bindings to cmark in the commonmark package, from which the C glue code was adapted\"),\n    person(\"GitHub, Inc.\", role = \"cph\", comment = \"Author of the cmark-gfm extensions\")\n    )",
+        "Description": "Render R Markdown to Markdown (without using 'knitr'), and Markdown\n    to lightweight HTML or 'LaTeX' documents via the bundled 'cmark-gfm' library\n    (instead of 'Pandoc'). Some missing Markdown features in 'cmark-gfm' are also\n    supported, such as raw HTML or 'LaTeX' blocks, 'LaTeX' math, superscripts,\n    subscripts, footnotes, element attributes, and appendices,\n    but not all 'Pandoc' Markdown features are (or will be) supported. With\n    additional JavaScript and CSS, you can also create HTML slides and articles.\n    This package can be viewed as a trimmed-down version of R Markdown and\n    'knitr'. It does not aim at rich Markdown features or a large variety of\n    output formats (the primary formats are HTML and 'LaTeX'). Book and website\n    projects of multiple input documents are also supported.",
         "Depends": "R (>= 3.2.0)",
-        "Imports": "utils, commonmark (>= 2.0.0), xfun (>= 0.55)",
+        "Imports": "utils, xfun (>= 0.62)",
         "Suggests": "rbibutils, rstudioapi, testit, tinyimg, tinytex",
         "License": "MIT + file LICENSE",
         "URL": "https://github.com/yihui/litedown",
         "BugReports": "https://github.com/yihui/litedown/issues",
-        "VignetteBuilder": "litedown",
         "Encoding": "UTF-8",
-        "Config/roxygen2/version": "8.1.0",
-        "NeedsCompilation": "no",
-        "Packaged": "2026-08-26 16:20:25 UTC; yihui",
-        "Author": "Yihui Xie [aut, cre] (ORCID: <https://orcid.org/0000-0003-0645-5666>,\n    URL: https://yihui.org),\n  Tim Taylor [ctb] (ORCID: <https://orcid.org/0000-0002-8587-7113>)",
+        "Config/roxygen2/version": "8.1.1",
+        "NeedsCompilation": "yes",
+        "Packaged": "2026-11-02 04:22:56 UTC; yihui",
+        "Author": "Yihui Xie [aut, cre] (ORCID: <https://orcid.org/0000-0003-0645-5666>,\n    URL: https://yihui.org),\n  Tim Taylor [ctb] (ORCID: <https://orcid.org/0000-0002-8587-7113>),\n  John MacFarlane [cph] (Author of cmark),\n  Jeroen Ooms [ctb, cph] (Author of the R bindings to cmark in the\n    commonmark package, from which the C glue code was adapted),\n  GitHub, Inc. [cph] (Author of the cmark-gfm extensions)",
         "Maintainer": "Yihui Xie <xie@yihui.name>",
         "Repository": "RSPM",
-        "Date/Publication": "2026-08-26 17:00:10 UTC",
-        "Built": "R 4.6.0; ; 2026-08-27 05:32:48 UTC; unix",
+        "Date/Publication": "2026-11-02 05:20:02 UTC",
+        "Built": "R 4.6.0; x86_64-pc-linux-gnu; 2026-11-03 04:40:13 UTC; unix",
         "RemoteType": "standard",
         "RemotePkgRef": "litedown",
         "RemoteRef": "litedown",
         "RemoteRepos": "https://packagemanager.posit.co/cran/__linux__/noble/latest",
         "RemotePkgPlatform": "x86_64-pc-linux-gnu-ubuntu-24.04",
-        "RemoteSha": "0.11"
+        "RemoteSha": "1.0"
       }
     },
     "lubridate": {
@@ -3032,7 +3031,7 @@
         "Package": "openssl",
         "Type": "Package",
         "Title": "Toolkit for Encryption, Signatures and Certificates Based on\nOpenSSL",
-        "Version": "2.4.2",
+        "Version": "2.5.0",
         "Authors@R": "c(person(\"Jeroen\", \"Ooms\", role = c(\"aut\", \"cre\"), email = \"jeroenooms@gmail.com\",\n    comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"Oliver\", \"Keyes\", role = \"ctb\"))",
         "Description": "Bindings to OpenSSL libssl and libcrypto, plus custom SSH key parsers.\n    Supports RSA, DSA and EC curves P-256, P-384, P-521, and curve25519. Cryptographic\n    signatures can either be created and verified manually or via x509 certificates. \n    AES can be used in cbc, ctr or gcm mode for symmetric encryption; RSA for asymmetric\n    (public key) encryption or EC for Diffie Hellman. High-level envelope functions \n    combine RSA and AES for encrypting arbitrary sized data. Other utilities include key\n    generators, hash functions (md5, sha1, sha256, etc), base64 encoder, a secure random\n    number generator, and 'bignum' math methods for manually performing crypto \n    calculations on large multibyte integers.",
         "License": "MIT + file LICENSE",
@@ -3045,18 +3044,18 @@
         "Encoding": "UTF-8",
         "Config/roxygen2/version": "8.0.0",
         "NeedsCompilation": "yes",
-        "Packaged": "2026-06-09 10:51:42 UTC; jeroen",
+        "Packaged": "2026-11-01 10:34:10 UTC; jeroen",
         "Author": "Jeroen Ooms [aut, cre] (ORCID: <https://orcid.org/0000-0002-4035-0289>),\n  Oliver Keyes [ctb]",
         "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
         "Repository": "RSPM",
-        "Date/Publication": "2026-06-09 13:30:02 UTC",
-        "Built": "R 4.6.0; x86_64-pc-linux-gnu; 2026-08-12 20:21:57 UTC; unix",
+        "Date/Publication": "2026-11-02 17:20:02 UTC",
+        "Built": "R 4.6.0; x86_64-pc-linux-gnu; 2026-11-03 04:40:31 UTC; unix",
         "RemoteType": "standard",
         "RemotePkgRef": "openssl",
         "RemoteRef": "openssl",
         "RemoteRepos": "https://packagemanager.posit.co/cran/__linux__/noble/latest",
         "RemotePkgPlatform": "x86_64-pc-linux-gnu-ubuntu-24.04",
-        "RemoteSha": "2.4.2"
+        "RemoteSha": "2.5.0"
       }
     },
     "otel": {
@@ -5283,7 +5282,7 @@
       "checksum": "f3ca3f6a499c2738512359eb9713daba"
     },
     "config/dreamhost-shards.tsv": {
-      "checksum": "e2ee18d342cfa105986fad1cbadb7124"
+      "checksum": "1e07ee2e05a4dfc4144d51b824358cf2"
     },
     "DESCRIPTION": {
       "checksum": "2ff0ad87337c6465a715c097e5be6729"
@@ -5298,7 +5297,7 @@
       "checksum": "a7ab05bacf0dd6ca906ff18a6edea1fa"
     },
     "global.R": {
-      "checksum": "db19363457d1e1c26682c663269cfe0d"
+      "checksum": "c540a2e6941e9b0689660f4acc6ef277"
     },
     "google-analytics.html": {
       "checksum": "a5c0852b70fe1b4e72044deb361cbd9d"
