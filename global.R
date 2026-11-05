@@ -170,20 +170,57 @@ phs_overlap <- function(chr,coordStart,coordEnd){
 		}
 	}
 
-# To get rsID coordinates
-ensembl <- useEnsembl("snp",dataset = "hsapiens_snp",GRCh = "37")
+# Resolve rsID coordinates lazily. Ensembl is an optional external dependency and
+# must not prevent the application from starting when its service is unavailable.
+ensembl <- NULL
+
+getEnsemblSnpMart <- function(){
+	if(!is.null(ensembl)){
+		return(ensembl)
+	}
+
+	mart <- tryCatch(
+		useEnsembl("snp", dataset = "hsapiens_snp", GRCh = "37"),
+		error = function(error){
+			message("Ensembl SNP lookup is currently unavailable: ", conditionMessage(error))
+			NULL
+		}
+	)
+
+	if(!is.null(mart)){
+		ensembl <<- mart
+	}
+	mart
+}
 
 # New function to get id
-getID <- function(idInput,db = ensembl){
-    coord <- getBM(
-    	attributes=c("chr_name","chrom_start","chrom_end"),
-    	filters ="snp_filter", 
-    	values =c(idInput), 
-    	mart = db, 
-    	uniqueRows=TRUE)
-    coord <- as.vector(coord)
-    names(coord) <- c("chr","start","end")
-    return(coord)
+getID <- function(idInput, db = NULL){
+	if(is.null(db)){
+		db <- getEnsemblSnpMart()
+	}
+	if(is.null(db)){
+		return(data.frame(chr=character(), start=numeric(), end=numeric()))
+	}
+
+	coord <- tryCatch(
+		getBM(
+			attributes=c("chr_name","chrom_start","chrom_end"),
+			filters ="snp_filter",
+			values =c(idInput),
+			mart = db,
+			uniqueRows=TRUE
+		),
+		error = function(error){
+			message("Ensembl SNP query failed: ", conditionMessage(error))
+			data.frame()
+		}
+	)
+	if(nrow(coord) < 1){
+		return(data.frame(chr=character(), start=numeric(), end=numeric()))
+	}
+
+	names(coord) <- c("chr","start","end")
+	coord
 }
 
 # Get coordinates from EnsemblID
