@@ -35,7 +35,7 @@ protocol=tcp
 EOF
 
 tail -n +2 "$PHV_DB_SHARD_MAP_FILE" |
-while IFS=$'\t' read -r logical_database table shard; do
+while IFS=$'\t' read -r logical_database table shard || [[ -n "${logical_database}${table}${shard}" ]]; do
   [[ -n "$logical_database" ]] || continue
   for identifier in "$logical_database" "$table" "$shard"; do
     [[ "$identifier" =~ ^[A-Za-z0-9_]+$ ]] || {

@@ -30,7 +30,7 @@ failed_file="$(mktemp)"
 trap 'rm -f "$defaults_file" "$failed_file"' EXIT
 printf 'source\ttable\ttarget\tsource_rows\ttarget_rows\tstatus\n'
 tail -n +2 "$PHV_DB_SHARD_MAP_FILE" |
-while IFS=$'\t' read -r logical_database table shard; do
+while IFS=$'\t' read -r logical_database table shard || [[ -n "${logical_database}${table}${shard}" ]]; do
   [[ -n "$logical_database" ]] || continue
   source_database="${PHV_DB_PREFIX}${logical_database}"
   target_database="${PHV_DB_PREFIX}${shard}"
